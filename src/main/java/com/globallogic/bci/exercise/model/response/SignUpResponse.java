@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class LoginResponse {
+public class SignUpResponse {
 	private Long id;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
