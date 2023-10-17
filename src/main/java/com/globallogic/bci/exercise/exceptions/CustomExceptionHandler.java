@@ -23,11 +23,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
-
-		String errorString = ex.getCause().toString();
-
-		if (errorString == null) {
-			errorString = ex.toString();
+		String errorString = null;
+		try {
+			errorString = ex.getCause().toString();
+			if (errorString == null) {
+				errorString = ex.toString();
+			}
+		} catch (Exception exGettingString) {
+			errorString = HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
 		}
 
 		ErrorResponseData error = new ErrorResponseData(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorString);
