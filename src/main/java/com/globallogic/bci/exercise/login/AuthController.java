@@ -31,7 +31,7 @@ public class AuthController {
 	}
 
 	@ResponseBody
-	@PostMapping(value = "/login")
+	@PostMapping
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginReq)
 			throws BadCredentialsException, Exception {
 		try {
