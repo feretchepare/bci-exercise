@@ -49,6 +49,10 @@ gradle wrapper
 ./gradlew bootRun
 ```
 
+## Test
+
+Import this [Postman collection](https://github.com/feretchepare/bci-exercise/blob/main/documentation/BCI%20Exercise.postman_collection.json) in documentation folder to test endpoints
+
 ## License
 
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
