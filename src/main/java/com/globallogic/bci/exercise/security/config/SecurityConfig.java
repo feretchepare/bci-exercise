@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable()).headers().frameOptions().disable().and()
             .authorizeRequests(requests -> requests.antMatchers("/h2-console/**", "/api/v1/sign-up/**", "/login/**").permitAll()
             .anyRequest().authenticated()).sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
