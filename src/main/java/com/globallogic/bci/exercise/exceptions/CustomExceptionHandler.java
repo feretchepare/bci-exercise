@@ -15,7 +15,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.globallogic.bci.exercise.model.response.ErrorResponse;
 import com.globallogic.bci.exercise.model.response.ErrorResponseData;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ControllerAdvice
+@Slf4j
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Autowired
@@ -38,6 +41,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ErrorResponseData error = new ErrorResponseData(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorString);
 		errors = new ErrorResponse(error);
+		log.error("EXCEPTION: " + errorString);
 		return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -52,6 +56,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ErrorResponseData error = new ErrorResponseData(HttpStatus.CONFLICT.value(), errorString);
 		errors = new ErrorResponse(error);
+		log.error("EXCEPTION: " + errorString);
 		return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.CONFLICT);
 	}
 	
@@ -66,6 +71,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ErrorResponseData error = new ErrorResponseData(HttpStatus.BAD_REQUEST.value(), errorString);
 		errors = new ErrorResponse(error);
+		log.error("EXCEPTION: " + errorString);
 		return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
 }
