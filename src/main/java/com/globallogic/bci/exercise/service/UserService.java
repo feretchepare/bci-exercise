@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.globallogic.bci.exercise.dto.SignUpDto;
@@ -19,6 +20,9 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public User signUp(SignUpDto signUpValues) throws Exception {
 		if (userRepository.findOneByEmail(signUpValues.getEmail()).isPresent()) {
 			throw new EntityExistsException("User already exists");
@@ -27,7 +31,7 @@ public class UserService {
 		User user = new User();
 		user.setName(signUpValues.getName());
 		user.setEmail(signUpValues.getEmail());
-		user.setPassword(signUpValues.getPassword());
+		user.setPassword(passwordEncoder.encode(signUpValues.getPassword()));
 		if (signUpValues.getPhones().length > 0) {
 			List<Phone> phones = new ArrayList<>();
 			for (Phone phone : signUpValues.getPhones()) {

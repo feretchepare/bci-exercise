@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -46,5 +47,19 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		ErrorResponseData error = new ErrorResponseData(HttpStatus.CONFLICT.value(), errorString);
 		errors = new ErrorResponse(error);
 		return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(value = { BadCredentialsException.class })
+	public ResponseEntity<Object> handleBadCredentialsException(Exception ex, WebRequest request) {
+
+		String errorString = ex.getLocalizedMessage();
+
+		if (errorString == null) {
+			errorString = ex.toString();
+		}
+
+		ErrorResponseData error = new ErrorResponseData(HttpStatus.BAD_REQUEST.value(), errorString);
+		errors = new ErrorResponse(error);
+		return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
 }

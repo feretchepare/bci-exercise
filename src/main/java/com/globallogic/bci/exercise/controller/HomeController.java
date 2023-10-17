@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.globallogic.bci.exercise.dto.SignUpDto;
 import com.globallogic.bci.exercise.model.User;
-import com.globallogic.bci.exercise.model.response.SignUpResponse;
+import com.globallogic.bci.exercise.model.response.LoginResponse;
 import com.globallogic.bci.exercise.service.UserService;
 
 @RestController
@@ -27,9 +27,9 @@ public class HomeController {
 
 	@GetMapping(value = "/sign-up", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpDto signUpValues) throws Exception {
+	public ResponseEntity<LoginResponse> signUp(@Valid @RequestBody SignUpDto signUpValues) throws Exception {
 		final User createdUser = userService.signUp(signUpValues);
-		final SignUpResponse response = new SignUpResponse();
+		final LoginResponse response = new LoginResponse();
 		response.setCreated(LocalDateTime.now());
 		response.setId(createdUser.getId());
 		//TODO: Completar datos de sesión y token
