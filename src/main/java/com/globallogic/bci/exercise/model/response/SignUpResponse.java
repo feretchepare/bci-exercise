@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Component
 public class SignUpResponse {
-	private Long id;
+	private UUID id;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
 	private String token;
