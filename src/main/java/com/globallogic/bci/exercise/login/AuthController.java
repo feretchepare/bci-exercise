@@ -1,12 +1,12 @@
 package com.globallogic.bci.exercise.login;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,31 +20,42 @@ import com.globallogic.bci.exercise.model.response.LoginResponse;
 @Controller
 @RequestMapping("/login")
 public class AuthController {
-	private final AuthenticationManager authenticationManager;
 
+	@Autowired
 	private JwtUtil jwtUtil;
 
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+
 	public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 
 	}
 
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@PostMapping
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginReq)
 			throws BadCredentialsException, Exception {
 		try {
-			Authentication authentication = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword()));
-			String email = authentication.getName();
+			CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(loginReq.getEmail());
 			User user = new User();
-			user.setEmail(email);
+			user.setId(userDetails.getUser().getId());
+			user.setEmail(userDetails.getUsername());
+			user.setPassword(userDetails.getPassword());
+			user.setName(userDetails.getUser().getName());
+			user.setPhones(userDetails.getUser().getPhones());
 			String token = jwtUtil.createToken(user);
 			LoginResponse response = new LoginResponse();
-			response.setCreated(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+			response.setCreated(LocalDateTime.now());
 			response.setId(user.getId());
 			response.setToken(token);
+			response.setName(user.getName());
+			response.setPassword(user.getPassword());
+			response.setEmail(user.getEmail());
+			response.setPhones(user.getPhones());
+			response.setIsActive(Boolean.TRUE);
+			response.setLastLogin(LocalDateTime.now());
+			response.setPhones(user.getPhones());
 			return ResponseEntity.ok(response);
 		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("Invalid username or password");
