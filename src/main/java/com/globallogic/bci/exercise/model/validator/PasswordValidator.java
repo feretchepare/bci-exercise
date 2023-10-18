@@ -11,6 +11,7 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
 	private Pattern pattern;
 	private Matcher matcher;
 
+	// Rule 1: Lowercase letters + digits, between 8 and 12 characters.
 	private static final String PASSWORD_PATTERN = "^[a-z0-9]{8,12}$";
 
 	@Override
@@ -25,7 +26,9 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
 	private boolean validatePassword(String pass) {
 		pattern = Pattern.compile(PASSWORD_PATTERN);
 		matcher = pattern.matcher(pass);
-		return matcher.matches();
+		// Rule 2: At least 2 numbers in any position.
+		long digitCounter = pass.chars().filter(c -> Character.isDigit(c)).count();
+		return matcher.matches() && digitCounter <= 2;
 	}
 
 }
