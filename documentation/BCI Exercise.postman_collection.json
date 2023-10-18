@@ -19,7 +19,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Username\",\r\n    \"email\": \"mail@mail.com\",\r\n    \"password\": \"123456\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": 1155554444,\r\n            \"citycode\": 1234,\r\n            \"countrycode\": \"AR\"\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"name\": \"Username\",\r\n    \"email\": \"mail@mail.com\",\r\n    \"password\": \"abcdef12\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": 1155554444,\r\n            \"citycode\": 1234,\r\n            \"countrycode\": \"AR\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,7 +52,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"mail@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"raw": "{\r\n    \"email\": \"mail@mail.com\",\r\n    \"password\": \"abcdef12\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
