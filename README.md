@@ -35,7 +35,7 @@ curl -s "https://get.sdkman.io" | bash
 7 - Install Gradle using installed SDKMAN
 
 ```bash
-sdk install gradle 8.4
+sdk install gradle 6.9
 ```
 
 8 - Add Gradle wrapper
