@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,15 +25,19 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping(value = "/sign-up", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpDto signUpValues) throws Exception {
+	public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpDto signUpValues,
+			final BindingResult bindingResult) throws Exception {
+		if (bindingResult.hasErrors()) {
+			throw new Exception(bindingResult.getAllErrors().toString());
+		}
 		final User createdUser = userService.signUp(signUpValues);
 		final SignUpResponse response = new SignUpResponse();
 		response.setCreated(LocalDateTime.now());
 		response.setId(createdUser.getId());
-		//TODO: Completar datos de sesión y token
+		// TODO: Completar datos de sesión y token
 		return ResponseEntity.ok(response);
 	}
 }
