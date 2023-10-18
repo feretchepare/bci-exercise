@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +29,10 @@ public class AuthController {
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 
+	private final AuthenticationManager authenticationManager;
+
 	public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 
 	}
@@ -37,7 +42,10 @@ public class AuthController {
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginReq)
 			throws BadCredentialsException, Exception {
 		try {
-			CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(loginReq.getEmail());
+			CustomUserDetails userFound = customUserDetailsService.loadUserByUsername(loginReq.getEmail());
+			final Authentication authenticated = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(userFound.getUsername(), loginReq.getPassword()));
+			final CustomUserDetails userDetails = (CustomUserDetails) authenticated.getPrincipal();
 			User user = new User();
 			user.setId(userDetails.getUser().getId());
 			user.setEmail(userDetails.getUsername());
@@ -53,7 +61,7 @@ public class AuthController {
 			response.setPassword(user.getPassword());
 			response.setEmail(user.getEmail());
 			response.setPhones(user.getPhones());
-			response.setIsActive(Boolean.TRUE);
+			response.setIsActive(userDetails.isEnabled());
 			response.setLastLogin(LocalDateTime.now());
 			response.setPhones(user.getPhones());
 			return ResponseEntity.ok(response);
