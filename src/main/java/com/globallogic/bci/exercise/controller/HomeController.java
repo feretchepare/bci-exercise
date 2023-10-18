@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.globallogic.bci.exercise.dto.SignUpDto;
+import com.globallogic.bci.exercise.login.JwtUtil;
 import com.globallogic.bci.exercise.model.User;
 import com.globallogic.bci.exercise.model.response.SignUpResponse;
 import com.globallogic.bci.exercise.service.UserService;
@@ -25,6 +26,9 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	@GetMapping(value = "/sign-up", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -37,7 +41,9 @@ public class HomeController {
 		final SignUpResponse response = new SignUpResponse();
 		response.setCreated(LocalDateTime.now());
 		response.setId(createdUser.getId());
-		// TODO: Completar datos de sesión y token
+		response.setToken(jwtUtil.createToken(createdUser));
+		response.setIsActive(Boolean.TRUE);
+		response.setLastLogin(LocalDateTime.now());
 		return ResponseEntity.ok(response);
 	}
 }
