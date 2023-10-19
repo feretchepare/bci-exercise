@@ -1,5 +1,8 @@
 local.properties
 .gradle
+.gradle/
+gradlew
+.idea/
 .settings/
 .loadpath
 .recommenders
