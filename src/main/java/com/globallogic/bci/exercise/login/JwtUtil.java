@@ -18,24 +18,24 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtil {
-	private final String secret_key = "mysecretkey";
-	private long accessTokenValidity = 60 * 60 * 1000;
+	private final String SECRET_KEY = "mysecretkey";
+	private final long ACCESS_TOKEN_VALIDITY = 60 * 60 * 1000;
 	private final String TOKEN_HEADER = "Authorization";
 	private final String TOKEN_PREFIX = "Bearer ";
 
 	private final JwtParser jwtParser;
 
 	public JwtUtil() {
-		this.jwtParser = Jwts.parser().setSigningKey(secret_key);
+		this.jwtParser = Jwts.parser().setSigningKey(SECRET_KEY);
 	}
 
 	public String createToken(User user) {
 		Claims claims = Jwts.claims().setSubject(user.getEmail());
 		claims.put("name", user.getName());
 		Date tokenCreateTime = new Date();
-		Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
+		Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_VALIDITY));
 		return Jwts.builder().setClaims(claims).setExpiration(tokenValidity)
-				.signWith(SignatureAlgorithm.HS256, secret_key).compact();
+				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
 	private Claims parseJwtClaims(String token) {
@@ -68,11 +68,7 @@ public class JwtUtil {
 	}
 
 	public boolean validateClaims(Claims claims) throws AuthenticationException {
-		try {
-			return claims.getExpiration().after(new Date());
-		} catch (Exception e) {
-			throw e;
-		}
+		return claims.getExpiration().after(new Date());
 	}
 
 	public String getEmail(Claims claims) {
