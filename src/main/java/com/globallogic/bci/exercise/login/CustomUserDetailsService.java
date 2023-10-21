@@ -23,8 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("User with email " + email + " do not exists");
 		}
 		final User user = userFound.get();
-		final CustomUserDetails userDetails = new CustomUserDetails(user);
-		return userDetails;
+		return new CustomUserDetails(user);
 	}
 
 }
