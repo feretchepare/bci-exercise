@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,13 +22,11 @@ import com.globallogic.bci.exercise.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1")
+@AllArgsConstructor
 public class HomeController {
 
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private JwtUtil jwtUtil;
+	private final UserService userService;
+	private final JwtUtil jwtUtil;
 
 	@GetMapping(value = "/sign-up", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

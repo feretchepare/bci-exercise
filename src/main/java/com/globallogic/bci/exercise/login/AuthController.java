@@ -2,7 +2,7 @@ package com.globallogic.bci.exercise.login;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,26 +21,17 @@ import com.globallogic.bci.exercise.model.response.LoginResponse;
 
 @Controller
 @RequestMapping("/login")
+@AllArgsConstructor
 public class AuthController {
 
-	@Autowired
-	private JwtUtil jwtUtil;
-
-	@Autowired
-	private CustomUserDetailsService customUserDetailsService;
-
+	private final JwtUtil jwtUtil;
+	private final CustomUserDetailsService customUserDetailsService;
 	private final AuthenticationManager authenticationManager;
-
-	public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-		this.authenticationManager = authenticationManager;
-		this.jwtUtil = jwtUtil;
-
-	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginReq)
-			throws BadCredentialsException, Exception {
+			throws Exception {
 		try {
 			CustomUserDetails userFound = customUserDetailsService.loadUserByUsername(loginReq.getEmail());
 			final Authentication authenticated = authenticationManager
