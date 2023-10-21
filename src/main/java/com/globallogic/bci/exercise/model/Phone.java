@@ -6,11 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "PHONES")
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Phone {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
