@@ -11,6 +11,8 @@ import com.globallogic.bci.exercise.model.validator.ValidPassword;
 
 import lombok.Data;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class SignUpDto {
@@ -23,6 +25,6 @@ public class SignUpDto {
 	@NotNull
 	@NotBlank
 	private String password;
-	private Phone[] phones;
+	private List<Phone> phones;
 
 }

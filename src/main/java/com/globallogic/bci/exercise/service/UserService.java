@@ -32,12 +32,8 @@ public class UserService {
 		user.setName(signUpValues.getName());
 		user.setEmail(signUpValues.getEmail());
 		user.setPassword(passwordEncoder.encode(signUpValues.getPassword()));
-		if (signUpValues.getPhones().length > 0) {
-			List<Phone> phones = new ArrayList<>();
-			for (Phone phone : signUpValues.getPhones()) {
-				phones.add(phone);
-			}
-			user.setPhones(phones);
+		if (!signUpValues.getPhones().isEmpty()) {
+			user.setPhones(new ArrayList<>(signUpValues.getPhones()));
 		}
 		return userRepository.save(user);
 	}
