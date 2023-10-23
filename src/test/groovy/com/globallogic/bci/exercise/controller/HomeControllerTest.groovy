@@ -4,7 +4,6 @@ import com.globallogic.bci.exercise.dto.SignUpDto
 import com.globallogic.bci.exercise.login.JwtUtil
 import com.globallogic.bci.exercise.model.User
 import com.globallogic.bci.exercise.service.UserService
-import org.assertj.core.error.ShouldNotContainKey
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import spock.lang.Specification
