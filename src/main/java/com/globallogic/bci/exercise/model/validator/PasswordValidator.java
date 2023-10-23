@@ -11,8 +11,8 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
 	private Pattern pattern;
 	private Matcher matcher;
 
-	// Rule 1: Lowercase letters + digits, between 8 and 12 characters.
-	private static final String PASSWORD_PATTERN = "^[a-z0-9]{8,12}$";
+	// Rules: Lowercase letters + Just 1 uppercase letter + 2 numbers, between 8 and 12 characters.
+	private static final String PASSWORD_PATTERN = "^(?=[^A-Z]*[A-Z][^A-Z]*$)(?=[^0-9]*[0-9]{2}[^0-9]*$)[a-zA-Z0-9]{8,12}$";
 
 	@Override
 	public void initialize(ValidPassword constraintAnnotation) {
@@ -26,9 +26,7 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
 	private boolean validatePassword(String pass) {
 		pattern = Pattern.compile(PASSWORD_PATTERN);
 		matcher = pattern.matcher(pass);
-		// Rule 2: At least 2 numbers in any position.
-		long digitCounter = pass.chars().filter(c -> Character.isDigit(c)).count();
-		return matcher.matches() && digitCounter <= 2;
+		return matcher.matches();
 	}
 
 }
