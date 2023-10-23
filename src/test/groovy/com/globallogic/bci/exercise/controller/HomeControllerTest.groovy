@@ -1,33 +1,55 @@
 package com.globallogic.bci.exercise.controller
 
 import com.globallogic.bci.exercise.dto.SignUpDto
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import com.globallogic.bci.exercise.login.JwtUtil
+import com.globallogic.bci.exercise.model.User
+import com.globallogic.bci.exercise.service.UserService
+import org.assertj.core.error.ShouldNotContainKey
+import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import spock.lang.Specification
 
-@SpringBootTest
 class HomeControllerTest extends Specification {
 
-    @Autowired
     private HomeController homeController
+    UserService userService
+    JwtUtil jwtUtil
+
+    def setup() {
+        userService = Mock(UserService)
+        jwtUtil = Mock(JwtUtil)
+        homeController = new HomeController(userService, jwtUtil)
+    }
+
 
     def "assert bean creation"() {
         expect:
         homeController != null
     }
 
-    def "when a new email is being sent then a new user is created"() {
+    def "error is thrown when there are binding errors"() {
         given:
-        BindingResult bindingResult = Mock()
+        userService.signUp(_) >> { throw new Exception("")}
         SignUpDto dto = new SignUpDto()
-        dto.setEmail "mail@mail.com"
-        dto.setPassword "abcdef12"
+        BindingResult bindingResult = Mock(BindingResult)
+
+        when:
+        homeController.signUp(dto, bindingResult)
+
+        then:
+        thrown Exception
+    }
+
+    def "OK status as response when there are no binding errors"() {
+        given:
+        userService.signUp(_) >> { new User()}
+        SignUpDto dto = new SignUpDto()
+        BindingResult bindingResult = Mock(BindingResult)
 
         when:
         def result = homeController.signUp(dto, bindingResult)
 
         then:
-        result.getStatusCode().value() == 200;
+        result.statusCode == HttpStatus.OK
     }
 }
