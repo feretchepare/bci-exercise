@@ -1,11 +1,12 @@
 local.properties
 .gradle
-.gradle/
+gradle/
 gradlew
 .idea/
 .settings/
 .loadpath
 .recommenders
+build/
 
 # Compiled class file
 *.class
