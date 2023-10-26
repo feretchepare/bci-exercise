@@ -3,12 +3,7 @@ package com.globallogic.bci.exercise.model;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,6 +23,6 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Phone> phones;
 }
