@@ -54,7 +54,6 @@ public class AuthController {
 			response.setPhones(user.getPhones());
 			response.setIsActive(userDetails.isEnabled());
 			response.setLastLogin(LocalDateTime.now());
-			response.setPhones(user.getPhones());
 			return ResponseEntity.ok(response);
 		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("Invalid username or password");
