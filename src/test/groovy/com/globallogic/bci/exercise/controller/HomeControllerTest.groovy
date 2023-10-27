@@ -61,9 +61,6 @@ class HomeControllerTest extends Specification {
     }
 
     def "Test signUp endpoint with valid data"() {
-        given:
-        BindingResult bindingResult = Mock(BindingResult)
-
         when:
         def signUpDto = new SignUpDto(name: "UsernameTest", email: 'mail@mail.com', password: "Abcdef12")
         def result = mockMvc.perform(MockMvcRequestBuilders
@@ -77,9 +74,6 @@ class HomeControllerTest extends Specification {
     }
 
     def "Test signUp endpoint with invalid data"() {
-        given:
-        BindingResult bindingResult = Mock(BindingResult)
-
         when:
         def signUpDto = new SignUpDto(name: "UsernameTest")
         def result = mockMvc.perform(MockMvcRequestBuilders
