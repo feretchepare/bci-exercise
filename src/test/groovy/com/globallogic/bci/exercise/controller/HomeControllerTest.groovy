@@ -1,15 +1,24 @@
 package com.globallogic.bci.exercise.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.globallogic.bci.exercise.dto.SignUpDto
 import com.globallogic.bci.exercise.login.JwtUtil
 import com.globallogic.bci.exercise.model.User
 import com.globallogic.bci.exercise.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.validation.BindingResult
 import spock.lang.Specification
 
+@SpringBootTest
+@AutoConfigureMockMvc
 class HomeControllerTest extends Specification {
 
+    @Autowired MockMvc mockMvc
     private HomeController homeController
     UserService userService
     JwtUtil jwtUtil
@@ -19,7 +28,6 @@ class HomeControllerTest extends Specification {
         jwtUtil = Mock(JwtUtil)
         homeController = new HomeController(userService, jwtUtil)
     }
-
 
     def "assert bean creation"() {
         expect:
@@ -50,5 +58,37 @@ class HomeControllerTest extends Specification {
 
         then:
         result.statusCode == HttpStatus.OK
+    }
+
+    def "Test signUp endpoint with valid data"() {
+        given:
+        BindingResult bindingResult = Mock(BindingResult)
+
+        when:
+        def signUpDto = new SignUpDto(name: "UsernameTest", email: 'mail@mail.com', password: "Abcdef12")
+        def result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/sign-up")
+                .contentType("application/json")
+                .content(new ObjectMapper().writeValueAsString(signUpDto)))
+                .andReturn().getResponse().getContentAsString()
+
+        then:
+        result != null
+    }
+
+    def "Test signUp endpoint with invalid data"() {
+        given:
+        BindingResult bindingResult = Mock(BindingResult)
+
+        when:
+        def signUpDto = new SignUpDto(name: "UsernameTest")
+        def result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/sign-up")
+                .contentType("application/json")
+                .content(new ObjectMapper().writeValueAsString(signUpDto)))
+                .andReturn().getResponse().getContentAsString()
+
+        then:
+        result != null
     }
 }
