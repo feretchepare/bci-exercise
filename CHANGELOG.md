@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## [1.0.3] - 2023-10-31
+
+## Fixed
+- Preventing null pointer exception when no phones are being sent in signup process
+
 ## [1.0.2] - 2023-10-26
 
 ## Fixed
@@ -19,6 +24,7 @@ The format is based on [![Common Changelog](https://common-changelog.org/badge.s
 
 _Initial release._
  
+[1.0.3]: https://github.com/feretchepare/bci-exercise/commits/1.0.3
 [1.0.2]: https://github.com/feretchepare/bci-exercise/commits/1.0.2
 [1.0.1]: https://github.com/feretchepare/bci-exercise/commits/1.0.1
 [1.0.0]: https://github.com/feretchepare/bci-exercise/commits/1.0.0
